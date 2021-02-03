@@ -84,8 +84,10 @@ q %>% ggplot(aes(x=price))+
 q %>% ggplot(aes(x=clarity))+
  geom_bar(stat = 'count')
 
-
+#change to factor
 q <- q %>% 
  mutate(test = as.factor(cut))
-
-str(q)
+(or)
+q$price <- as.factor(q$price)
+str(q$price)
+label(q$price)
