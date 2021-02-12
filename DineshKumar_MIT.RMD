@@ -1,0 +1,190 @@
+Question No: 1
+In an exam, the score records of 16 students (suppose they worked independently) are given below:
+45, 88, 58,74, 56, 70, 84, 73, 60, 69, 65, 72, 72, 69, 64, 71 
+(a) Plot the data using BoxPlot, are there detected outliers? Indicate their values if any. (5pt)
+
+```{r}
+x<-c(45, 88, 58,74, 56, 70, 84, 73, 60, 69, 65, 72, 72, 69, 64, 71)
+x
+graphics.off()
+boxplot(x, ylab = "students", main= "Box plot of the students score")
+outlier <- boxplot.stats(x)
+outlier
+
+```
+
+(b) Summarize the data (e.g., mean, max, min, mode, median, range, standard deviation, variance)
+Then, use appropriate test to decide whether the data are normal. (10pt)
+
+```{r}
+summary <- summary(x)
+summary
+#appropriate method to confirm the test
+#mean test
+mean_val<- mean(x)
+mean_val
+#median test
+median_val<-median(x)
+median_val
+#max value
+max_val<-max(x)
+max_val
+#min values
+min_val<-min(x)
+min_val
+#sd values
+sd_val<-sd(x)
+sd_val
+#variance
+var_val<-var(x)
+var_val
+#range values
+range_values<-range(x)
+range_values
+#mode values
+table<- table(x)
+table
+names(table)[table == max(table)]
+
+```
+
+(c). Conduct the hypothesis testing Ho: 𝜇 = 60 against Ha: 𝜇 > 60 at level of significance 
+𝛼 = 0:05
+
+Answers:
+Number of samples are less than 30(samples or not large) so that we can perform the t-test
+Alternative hypothesis value is greater than 60 so we have to perform the 
+"one tailed right sided test"
+
+```{r}
+#Answers:
+#Number of samples are less than 30(samples or not large) so that we can perform the t-test
+#Alternative hypothesis value is greater than 60 so we have to perform the 
+#"one tailed right sided test"
+mu=60
+n=16
+alpha=0.05
+test <- t.test(x,mu=60, alternative = "greater" )
+test
+#from the test the p value is 0.003499 (Check the result)
+test$p.value
+p<-pt(test$statistic, df = n-1, lower.tail = F)
+p
+ifelse(p<=alpha, "The null hypothesis is rejected", "There is not enough
+evidence to reject the null hypothesis.")
+
+(or)
+
+ifelse(test$p.value<=alpha, "The null hypothesis is rejected", "There is not enough
+evidence to reject the null hypothesis.")
+
+```
+Redo part (c) at level of significance 𝛼 = 0.01. 
+Compare your result with the one found in part (c)
+```{r}
+mu1=60
+n1=16
+alpha1 = 0.01
+test1 <- t.test(x,mu1=60, alternative = "greater" )
+test1
+test1$p.value
+p1<-pt(test$statistic, df = n1-1, lower.tail = F)
+p1
+ifelse(p1<=alpha1, "The null hypothesis is rejected", "There is not enough
+evidence to reject the null hypothesis.")
+
+(or)
+
+ifelse(test1$p1.value<=alpha1, "The null hypothesis is rejected", "There is not enough
+evidence to reject the null hypothesis.")
+
+
+# in both alpha = 0.05 and 0.01, the p_value is is less than the alpha value so 
+# the null hypothesis of both are rejected so alternative hypothesis is accepted
+
+```
+2. The water quality data of many dams are provided below:
+(a) Make scatter plots with data for all possible pair (pairwise) (5pt)
+(b) Determine Pearson’s correlation coefficient r of (a) (5pt)
+(c) Interpret the results (10pt)
+
+```{r}
+#Dataset (Dams.csv) on the working directory of my system
+dams <-read.csv("Dams.csv")
+
+#pairs(dams [,c[(1:3)])
+scatter.smooth(dams$Temp,dams$pH)
+scatter.smooth(dams$pH, dams$TN)
+scatter.smooth(dams$TN, dams$TP)
+
+# Determine Pearson’s correlation coefficient r of (a) (5pt)
+cor.test(dams$Temp,dams$pH, method = "pearson")
+cor.test(dams$pH, dams$TN, method = "pearson")
+cor.test(dams$TN, dams$TP, method = "pearson")
+
+#Interpret the results (10pt)
+linearmodel1<-lm(dams$Temp~dams$pH)
+summary(linearmodel1)
+linearmodel2<-lm(dams$pH~dams$TN)
+summary(linearmodel2)
+linearmodel3<-lm(dams$TN~dams$TP)
+summary(linearmodel3)
+
+summary_check1<-summary(linearmodel1)
+summary_check1
+linear1_coff1<-summary_check1$coefficients
+linear1_coff1
+
+summary_check2<-summary(linearmodel2)
+summary_check2
+linear1_coff2<-summary_check2$coefficients
+linear1_coff2
+
+summary_check3<-summary(linearmodel3)
+summary_check3
+linear1_coff3<-summary_check3$coefficients
+linear1_coff3
+
+
+```
+
+3. Apply ANOVA for the example data (Data 1 & 2, in Exercise 7-1). 
+In both applications, clearly
+state a hypothesis and explain the results.
+(a) Apply one-way ANOVA for Data 1. (10pt)
+(b) Apply two-way ANOVA for Data 2, considering the interaction. (10pt)
+```{r}
+data1<-read.csv("data1.csv")
+summary(data1)
+boxplot(data1$pressure ~ data1$drink)
+onewy_anova <- oneway.test(data1$pressure ~ data1$drink, var =T)
+onewy_anova
+result <-aov(data1$pressure ~ data1$drink)
+result
+ifelse(onewy_anova$p.value<=0.05, "Null hypothesis rejected", "Failed to reject null hypothesis")
+```
+(b) Apply two-way ANOVA for Data 2, considering the interaction. (10pt)
+```{r}
+data2<-read.csv("data2.csv")
+summary(data2)
+boxplot(data2$pressure ~ data2$drink*data2$gender)
+result2 <-aov(data2$pressure ~ data2$drink*data2$gender)
+result2
+#ifelse(onewy_anova$p.value<=0.05, "Null hypothesis rejected", "Failed to reject null
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
