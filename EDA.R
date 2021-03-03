@@ -65,7 +65,7 @@ diamondsw.large <-q %>% sample_n(1000)
 #dot plot
 
 q %>% ggplot(aes(x=carat)) +
- geom_dotplot(binwidth = 0.05, stackdir = 'up', color = 'red', dotsize = 3) +
+ geom_dotplot(binwidth = 0.05, stackdir = 'center', color = 'red', dotsize = 0.5) +
  scale_x_continuous(breaks = seq(0,5,0.5)) +
  scale_y_continuous(breaks = seq(0,3,0.5))
 
